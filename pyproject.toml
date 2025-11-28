@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 88
+exclude = '''
+(
+  /myenv
+| /venv
+| /env
+| /__pycache__
+)
+'''
