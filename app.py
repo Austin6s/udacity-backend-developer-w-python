@@ -13,6 +13,24 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 db = SQLAlchemy(app)
 
 
+# --------------------------
+# SQLAlchemy Model
+# --------------------------
+class Person(db.Model):
+    __tablename__ = "persons"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+
+    def __repr__(self):
+        return f"<Person ID: {self.id}, name: {self.name}>"
+
+
+with app.app_context():
+    db.create_all()
+
+
 @app.route("/")
 def index():
-    return "Hello World!"
+    person = Person.query.first()
+    return f"Hello {person.name}!"
