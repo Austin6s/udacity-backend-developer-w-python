@@ -26,6 +26,15 @@ deactivate () {
 
     unset VIRTUAL_ENV
     unset VIRTUAL_ENV_PROMPT
+    
+    # Clean up PostgreSQL environment variables if they were set by postactivate
+    if [ -n "${PGUSER:-}" ] && [ "${PGUSER:-}" = "postgres" ] ; then
+        unset PGUSER
+    fi
+    if [ -n "${PGHOST:-}" ] && [ "${PGHOST:-}" = "127.0.0.1" ] ; then
+        unset PGHOST
+    fi
+    
     if [ ! "${1:-}" = "nondestructive" ] ; then
     # Self destruct!
         unset -f deactivate
@@ -46,7 +55,7 @@ else
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"
-PATH="$VIRTUAL_ENV/"bin":$PATH"
+PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 
 # unset PYTHONHOME if set
@@ -68,3 +77,8 @@ fi
 # Call hash to forget past commands. Without forgetting
 # past commands the $PATH changes we made may not be respected
 hash -r 2> /dev/null
+
+# Run postactivate script if it exists
+if [ -f "$VIRTUAL_ENV/bin/postactivate" ] ; then
+    source "$VIRTUAL_ENV/bin/postactivate"
+fi

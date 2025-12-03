@@ -1,21 +1,16 @@
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-db_password = os.getenv("DB_PWD")
-
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://postgres:{db_password}@localhost:5432/example"
+    f"postgresql://postgres:Skeeter6@localhost:5432/example"
 )
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
 
-# --------------------------
-# SQLAlchemy Model
-# --------------------------
 class Person(db.Model):
     __tablename__ = "persons"
 
